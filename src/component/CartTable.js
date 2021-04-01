@@ -16,6 +16,7 @@ class CartTable extends React.Component {
         author: '刘慈欣',
         cover: 'http://img3m4.ddimg.cn/32/35/23579654-1_u_3.jpg',
         quantity: 1,
+        unitprice: 50,
         price: 50,
         date: '2020-3-20',
         description: '程序员必读经典著作！理解计算机系统*书目，10万程序员共同选择。第二版销售突破100000册，第三版重磅上市！'
@@ -26,6 +27,7 @@ class CartTable extends React.Component {
         author: '刘慈欣',
         cover: 'http://img3m4.ddimg.cn/32/35/23579654-1_u_3.jpg',
         quantity: 1,
+        unitprice: 50,
         price: 50,
         date: '2020-3-20',
         description: '程序员必读经典著作！理解计算机系统*书目，10万程序员共同选择。第二版销售突破100000册，第三版重磅上市！'
@@ -36,6 +38,7 @@ class CartTable extends React.Component {
         author: '刘慈欣',
         cover: 'http://img3m4.ddimg.cn/32/35/23579654-1_u_3.jpg',
         quantity: 2,
+        unitprice: 35,
         price: 70,
         date: '2020-3-20',
         description: '程序员必读经典著作！理解计算机系统*书目，10万程序员共同选择。第二版销售突破100000册，第三版重磅上市！'
@@ -46,6 +49,7 @@ class CartTable extends React.Component {
         author: '刘慈欣',
         cover: 'http://img3m4.ddimg.cn/32/35/23579654-1_u_3.jpg',
         quantity: 2,
+        unitprice: 35,
         price: 70,
         date: '2020-3-20',
         description: '程序员必读经典著作！理解计算机系统*书目，10万程序员共同选择。第二版销售突破100000册，第三版重磅上市！'
@@ -120,6 +124,19 @@ class CartTable extends React.Component {
     clearFilters();
     this.setState({ searchText: '' });
   };
+
+  handleNumChange = (key, value) => {
+    console.log(key, value);
+    this.state.data.forEach(element => {
+      if (element.key == key) {
+        element.quantity = value;
+        element.price = element.quantity * element.unitprice;
+      }
+    });
+    this.setState(
+      {data: this.state.data}
+    )
+  }
   
   render() {
     const columns = [
@@ -141,9 +158,9 @@ class CartTable extends React.Component {
         dataIndex: 'quantity',
         key: 'quantity',
         width: '10%',
-        // render: (_,record) => (
-        //   <Input type="number" min={1} defaultValue={record.quantity}/>
-        // )
+        render: (_,record) => (
+          <InputNumber type="number" min={1} defaultValue={record.quantity} onChange={(value)=>{this.handleNumChange(record.key, value)}}/>
+        )
       },
       {
         title: 'Price',
@@ -160,7 +177,7 @@ class CartTable extends React.Component {
     this.state.total = 0;
     this.state.data.forEach(item => {
       if (this.state.selectedRowKeys.indexOf(item.key) >= 0) {
-        this.state.total += item.quantity * item.price;
+        this.state.total += item.price;
       }
     });
 

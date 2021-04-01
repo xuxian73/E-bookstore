@@ -150,7 +150,43 @@ class AdminOrderTable extends React.Component {
         dataIndex: 'date',
         key: 'date',
         width: '20%',
-        ...this.getColumnSearchProps('date'),
+        filters: [
+          {
+            text: 'Last Week',
+            value: 'lw',
+          },
+          {
+            text: 'Last Month',
+            value: 'lm',
+          },
+          {
+            text: 'Last Half Year',
+            value: 'lhy'
+          },
+          {
+            text: 'Last Year',
+            value: 'ly'
+          }
+        ],
+        filterMultiple: false,
+        onFilter: (value, record) => {
+          var time = (new Date()).getTime();
+          console.log(time);
+          if (value == 'lw') {
+            time -= 604800000;
+          } else if (value == 'lm') {
+            time -= 2592000000;
+          } else if (value == 'lhy') {
+            time -= 15552000000;
+          } else if (value == 'ly') {
+            time -= 31536000000;
+          }
+          const date = new Date(time);
+          const orderDate = new Date(record.date);
+          if (orderDate > date) {
+            return true;
+          } else return false;
+        }
       },
     ];
     return(

@@ -10,7 +10,7 @@ const data = [
     cover: 'http://img3m4.ddimg.cn/32/35/23579654-1_u_3.jpg',
     quantity: '1',
     price: '$50',
-    date: '2020-3-20',
+    date: '2020-5-20',
     description: '程序员必读经典著作！理解计算机系统*书目，10万程序员共同选择。第二版销售突破100000册，第三版重磅上市！'
   },
   {
@@ -20,7 +20,7 @@ const data = [
     cover: 'http://img3m4.ddimg.cn/32/35/23579654-1_u_3.jpg',
     quantity: '1',
     price: '$50',
-    date: '2020-3-20',
+    date: '2021-1-20',
     description: '程序员必读经典著作！理解计算机系统*书目，10万程序员共同选择。第二版销售突破100000册，第三版重磅上市！'
   },
   {
@@ -30,7 +30,7 @@ const data = [
     cover: 'http://img3m4.ddimg.cn/32/35/23579654-1_u_3.jpg',
     quantity: '2',
     price: '$70',
-    date: '2020-3-20',
+    date: '2021-3-20',
     description: '程序员必读经典著作！理解计算机系统*书目，10万程序员共同选择。第二版销售突破100000册，第三版重磅上市！'
   },
   {
@@ -40,7 +40,7 @@ const data = [
     cover: 'http://img3m4.ddimg.cn/32/35/23579654-1_u_3.jpg',
     quantity: '2',
     price: '$70',
-    date: '2020-3-20',
+    date: '2021-4-1',
     description: '程序员必读经典著作！理解计算机系统*书目，10万程序员共同选择。第二版销售突破100000册，第三版重磅上市！'
 
   },
@@ -139,7 +139,43 @@ class OrderTable extends React.Component {
         dataIndex: 'date',
         key: 'date',
         width: '20%',
-        ...this.getColumnSearchProps('date'),
+        filters: [
+          {
+            text: 'Last Week',
+            value: 'lw',
+          },
+          {
+            text: 'Last Month',
+            value: 'lm',
+          },
+          {
+            text: 'Last Half Year',
+            value: 'lhy'
+          },
+          {
+            text: 'Last Year',
+            value: 'ly'
+          }
+        ],
+        filterMultiple: false,
+        onFilter: (value, record) => {
+          var time = (new Date()).getTime();
+          console.log(time);
+          if (value == 'lw') {
+            time -= 604800000;
+          } else if (value == 'lm') {
+            time -= 2592000000;
+          } else if (value == 'lhy') {
+            time -= 15552000000;
+          } else if (value == 'ly') {
+            time -= 31536000000;
+          }
+          const date = new Date(time);
+          const orderDate = new Date(record.date);
+          if (orderDate > date) {
+            return true;
+          } else return false;
+        }
       },
     ];
     return(

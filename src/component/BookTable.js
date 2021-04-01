@@ -2,7 +2,6 @@ import React from 'react'
 import { Table, Switch, Input, Button, Popconfirm, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import AddBook from '../component/AddBook'
-
 class BookTable extends React.Component {
     state = {
         searchText: '',
